@@ -69,12 +69,11 @@ function draw() {
     y[i] += vy[i];  // Advance vy pixels per frame.
     
     var sokudo = Math.hypot(vx[i],vy[i]); // dist(0,0,vx[i],vy[i]); Find velocity from X and Y components of velocity
-
     var r = map(sokudo, 0, 5, 0, 255); //Calculate color according to speed
     var g = map(sokudo, 0,5, 64, 255);
     var b = map(sokudo, 0,5, 128, 255);
-
-    ctx.fillStyle = `rgba(${r}, ${g}, ${b}, 32)`; //fill(r, g, b, 32)
+    var alpha = map(32, 0, 255, 0, 1);
+    ctx.fillStyle = `rgba(${r}, ${g}, ${b}, ${alpha})`; //fill(r, g, b, 32)
 
     //Equivalent to ellipse(x[i],y[i],radius,radius)
     ctx.beginPath();
