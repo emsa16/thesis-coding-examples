@@ -13,8 +13,9 @@ var gensoku = 0.95; // Slow down particle movement
 
 //no setup() needed, everything there now happens in global scope
 
-// instead of createCanvas, a canvas element is added to the HTML
-var c = document.getElementById("canvas");
+// equivalent to createCanvas(windowWidth,windowHeight)
+var c = document.createElement("canvas");
+document.body.appendChild(c);
 var ctx = c.getContext("2d");
 ctx.canvas.width  = window.innerWidth;
 ctx.canvas.height = window.innerHeight;
@@ -49,7 +50,7 @@ function map (num, in_min, in_max, out_min, out_max) {
 //Gets called around 60 times per second by window.requestAnimationFrame(), generally matches display refresh rate
 function draw() {
   ctx.fillStyle = "#000000"; //fill(0, 0, 0)
-  ctx.fillRect(0, 0, canvas.width, canvas.height); //rect(0,0,width,height);
+  ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height); //rect(0,0,width,height);
 
   for(var i=0; i<num; i++){
     var distance = Math.hypot(x[i] - mouseX, y[i] - mouseY); //dist(mouseX, mouseY, x[i], y[i]);
