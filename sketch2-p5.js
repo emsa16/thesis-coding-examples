@@ -15,12 +15,12 @@ var Particle = function(x, y, c, r) {
 	this.ax = 0;
 	this.ay = GRAVITY;
 	this.c = c || 'white';
-	this.alpha = 1;
+	this.alpha = 255;
 	this.r = r || random(.5, 3);
 
 	this.evolve = function() {
-		this.alpha -= .008;
-		
+		this.alpha -= 2.04; // p5 alpha values go 0-255, so decrement value is 255 * 0,008 = 2,04
+
 		this.vx += this.ax;
 		this.vy += this.ay;
 
@@ -46,8 +46,7 @@ var Particle = function(x, y, c, r) {
 
 	this.draw = function() {
     var c = color(this.c);
-    // console.log(this.alpha); //TEMP TA BORT
-    // c.setAlpha(this.alpha); //ct.globalAlpha = this.alpha; //TEMP VARFÖR FUNKAR DETTA EJ?
+    c.setAlpha(this.alpha); //ct.globalAlpha = this.alpha;
     fill(c); //ct.fillStyle = this.c;
     circle(this.x, this.y, this.r); //Replaces creating Canvas circles with arc
 	};
@@ -93,7 +92,7 @@ function draw() {
   translate(.5 * width, .5 * height);
 
   fill('rgba(0, 0, 0, 0.08)');
-  rect(-.5 * width, -.5 * height, width, height);
+  rect(-.5 * width, -.5 * height, width, height); //TEMP Default rectmode är corner, ska det verkligen vara såhär?
 
   for(var i = 0; i < n; i++) {
     particles[i].evolve();
