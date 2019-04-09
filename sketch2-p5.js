@@ -1,5 +1,5 @@
-var PARTICLES_FROM_POINT = 32, 
-    GRAVITY = .01, 
+var PARTICLES_FROM_POINT = 32,
+    GRAVITY = .01,
     δ,
     cr,
     particles = [],
@@ -17,13 +17,13 @@ var Particle = function(x, y, c, r) {
 	this.c = c || 'white';
 	this.alpha = 1;
 	this.r = r || random(.5, 3);
-	
+
 	this.evolve = function() {
 		this.alpha -= .008;
 		
 		this.vx += this.ax;
 		this.vy += this.ay;
-		
+
 		this.x += this.vx;
 		this.y += this.vy;
 
@@ -33,7 +33,7 @@ var Particle = function(x, y, c, r) {
 			this.vx *= .95;
 			this.vy *= -.9;
 		}
-    
+
     //TEMP abs(this.x) > .5 * width ??? att partikeln tas bort om x är mer än halva bredden?
     //TEMP this.y < -.5 * height ???? det kommer aldrig hända
 		if ((abs(this.x) > .5 * width + 2 * this.r) || (this.y < -.5 * height - 2 * this.r) || this.alpha <= 0) {
@@ -43,7 +43,7 @@ var Particle = function(x, y, c, r) {
       this.draw();
     }
 	};
-	
+
 	this.draw = function() {
     var c = color(this.c);
     // console.log(this.alpha); //TEMP TA BORT
@@ -51,7 +51,7 @@ var Particle = function(x, y, c, r) {
     fill(c); //ct.fillStyle = this.c;
     circle(this.x, this.y, this.r); //Replaces creating Canvas circles with arc
 	};
-	
+
 	this.destroy = function() {
 		var idx = particles.indexOf(this);
 		particles.splice(idx, 1);
@@ -81,13 +81,13 @@ function setup() {
 
 
 
-function draw() {  
+function draw() {
   var _r = cr * (2 + sin(.73 * φ))/2, //TEMP VAD ÄR DETTA?
       x = _r * cos(φ),
-      y = _r * sin(φ), 
-      hue = ~~(.183 * φ / PI * 360) % 360, 
+      y = _r * sin(φ),
+      hue = ~~(.183 * φ / PI * 360) % 360,
       light,
-      p, 
+      p,
       n = particles.length;
 
   translate(.5 * width, .5 * height);
