@@ -27,15 +27,13 @@ var Particle = function(x, y, c, r) {
 		this.x += this.vx;
 		this.y += this.vy;
 
-    //TEMP denna verkar hantera att partiklarna når botten på canvaselementet, fast varför jobbar den med bredden? Är detta ett fel?
+    //TEMP denna verkar hantera att partiklarna når botten på canvaselementet, men varför jobbar den med bredden? Fel?
 		if (this.y > .5 * width - this.r) {
 			this.y = .5 * width - this.r;
 			this.vx *= .95;
 			this.vy *= -.9;
 		}
 
-    //TEMP abs(this.x) > .5 * width ??? att partikeln tas bort om x är mer än halva bredden?
-    //TEMP this.y < -.5 * height ???? det kommer aldrig hända
 		if ((abs(this.x) > .5 * width + 2 * this.r) || (this.y < -.5 * height - 2 * this.r) || this.alpha <= 0) {
 			this.destroy();
 			return;
@@ -64,15 +62,10 @@ function setup() {
   background(0); // Instead of setting the color in CSS
   noStroke();  //Needed addition, default seems to be black stroke
 
-  // TEMP BEHÖVS?
-  // html {
-  //   overflow: hidden;
-  // }
-
   cr = .25 * min(height, width); //TEMP VAD ÄR DETTA???
   δ = PI/90; //TEMP FINNS DETTA I P5?
 
-  // TEMP TEST
+  // TEMP för test av en enda partikel
   // var _r = cr * (2 + sin(.73 * φ))/2,
   // x = _r * cos(φ),
   // y = _r * sin(φ),
@@ -110,7 +103,7 @@ function draw() {
   translate(.5 * width, .5 * height);
 
   fill('rgba(0, 0, 0, 0.08)');
-  rect(-.5 * width, -.5 * height, width, height); //TEMP Default rectmode är corner, ska det verkligen vara såhär?
+  rect(-.5 * width, -.5 * height, width, height);
 
   for(var i = 0; i < n; i++) {
     particles[i].evolve();
@@ -136,12 +129,11 @@ function draw() {
 
 
 
-//TEMP TA BORT
-function mousePressed() {
-  noLoop();
-}
+//TEMPGREJER
+// function mousePressed() {
+//   noLoop();
+// }
 
-function mouseReleased() {
-  loop();
-}
-
+// function mouseReleased() {
+//   loop();
+// }
