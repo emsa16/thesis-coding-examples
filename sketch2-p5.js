@@ -70,13 +70,31 @@ function setup() {
   // }
 
   cr = .25 * min(height, width); //TEMP VAD ÄR DETTA???
-
-  //TEMP BEHÖVS?
-  // ct.restore();
-	// ct.save();
-
   δ = PI/90; //TEMP FINNS DETTA I P5?
+
+  // TEMP TEST
+  // var _r = cr * (2 + sin(.73 * φ))/2,
+  // x = _r * cos(φ),
+  // y = _r * sin(φ),
+  // hue = ~~(.183 * φ / PI * 360) % 360,
+  // light,
+  // p;
+  // translate(.5 * width, .5 * height);
+  // light = 40 * (1  + random());
+  // p = new Particle(x + randomSign() * random(8), y + randomSign() * random(8), 'hsl(' + hue + ',100%,' + light + '%)');
+  // p.draw();
+  // particles.push(p);
 };
+
+
+
+//Replaces size() and addEventListener('resize', size, false)
+function windowResized() {
+  resizeCanvas(windowWidth, windowHeight);
+  background(0); // Instead of setting the color in CSS
+  noStroke();  //Needed addition, default seems to be black stroke
+  cr = .25 * min(height, width); //TEMP VAD ÄR DETTA???
+}
 
 
 
@@ -118,30 +136,12 @@ function draw() {
 
 
 
-//Replaces size() and addEventListener('resize', size, false)
-function windowResized() {
-  resizeCanvas(windowWidth, windowHeight);
-  cr = .25 * min(height, width); //TEMP VAD ÄR DETTA???
-
-  //TEMP BEHÖVS?
-  // ct.restore();
-	// ct.save();
-
-  translate(.5 * width, .5 * height);
+//TEMP TA BORT
+function mousePressed() {
+  noLoop();
 }
 
+function mouseReleased() {
+  loop();
+}
 
-// //TEMP TA BORT
-// function mousePressed() {
-//   noLoop();
-// }
-
-
-// TEMP TEST
-// var φ=0, _r = cr*(2 + Math.sin(.73*φ))/2, x = _r*Math.cos(φ), y = _r*Math.sin(φ), 
-// hue = ~~(.183*φ/Math.PI*360)%360, light, p;
-
-// light = 40*(1  + Math.random());
-// p = new Particle(x + rsgn()*rand(8), y + rsgn()*rand(8), 'hsl(' + hue + ',100%,' + light + '%)');
-// p.draw();
-// particles.push(p);
