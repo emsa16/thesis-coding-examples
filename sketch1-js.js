@@ -72,7 +72,7 @@ function draw() {
     var r = map(sokudo, 0, 5, 0, 255); //Calculate color according to speed
     var g = map(sokudo, 0,5, 64, 255);
     var b = map(sokudo, 0,5, 128, 255);
-    var alpha = map(32, 0, 255, 0, 1);
+    var alpha = map(32, 0, 255, 0, 1); // Extra remapping needed
     ctx.fillStyle = `rgba(${r}, ${g}, ${b}, ${alpha})`; //fill(r, g, b, 32)
 
     //Equivalent to ellipse(x[i],y[i],radius,radius)
