@@ -1,11 +1,11 @@
 var PARTICLES_FROM_POINT = 32,
     GRAVITY = .01,
-    δ,
-    cr,
+    delta,
+    radiusLimiter,
     particles = [],
-    φ = 0;
+    phi = 0;
 
-var randomSign = (k) => (random() < (k || .5)) ? -1: 1; //TEMP FINNS DETTA I P5?
+var randomSign = (k) => (random() < (k || .5)) ? -1: 1;
 
 var Particle = function(x, y, c, r) {
 	this.x = x || 0;
@@ -27,7 +27,6 @@ var Particle = function(x, y, c, r) {
 		this.x += this.vx;
 		this.y += this.vy;
 
-    //TEMP denna verkar hantera att partiklarna når botten på canvaselementet, men varför jobbar den med bredden? Fel?
 		if (this.y > .5 * width - this.r) {
 			this.y = .5 * width - this.r;
 			this.vx *= .95;
@@ -62,21 +61,8 @@ function setup() {
   background(0); // Instead of setting the color in CSS
   noStroke();  //Needed addition, default seems to be black stroke
 
-  cr = .25 * min(height, width); //TEMP VAD ÄR DETTA???
-  δ = PI/90; //TEMP FINNS DETTA I P5?
-
-  // TEMP för test av en enda partikel
-  // var _r = cr * (2 + sin(.73 * φ))/2,
-  // x = _r * cos(φ),
-  // y = _r * sin(φ),
-  // hue = ~~(.183 * φ / PI * 360) % 360,
-  // light,
-  // p;
-  // translate(.5 * width, .5 * height);
-  // light = 40 * (1  + random());
-  // p = new Particle(x + randomSign() * random(8), y + randomSign() * random(8), 'hsl(' + hue + ',100%,' + light + '%)');
-  // p.draw();
-  // particles.push(p);
+  radiusLimiter = .25 * min(height, width);
+  delta = PI/90;
 };
 
 
@@ -86,16 +72,16 @@ function windowResized() {
   resizeCanvas(windowWidth, windowHeight);
   background(0); // Instead of setting the color in CSS
   noStroke();  //Needed addition, default seems to be black stroke
-  cr = .25 * min(height, width); //TEMP VAD ÄR DETTA???
+  radiusLimiter = .25 * min(height, width);
 }
 
 
 
 function draw() {
-  var _r = cr * (2 + sin(.73 * φ))/2, //TEMP VAD ÄR DETTA?
-      x = _r * cos(φ),
-      y = _r * sin(φ),
-      hue = ~~(.183 * φ / PI * 360) % 360,
+  var radius = radiusLimiter * (2 + sin(.73 * phi)) / 2,
+      x = radius * cos(phi),
+      y = radius * sin(phi),
+      hue = ~~(.183 * phi / PI * 360) % 360,
       light,
       p,
       n = particles.length;
@@ -121,7 +107,7 @@ function draw() {
     particles.push(p);
   }
 
-  φ += δ; //Replaces injecting φ + δ into the ani() function
+  phi += delta; //Replaces injecting phi + delta into the ani() function
 
   // TEMP funderar på this
   // requestAnimationFrame(ani.bind(this, φ + δ))
