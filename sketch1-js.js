@@ -24,7 +24,7 @@ ctx.strokeStyle = "rgba(1, 1, 1, 0)"; // NoStroke()
 ctx.fillStyle = "#000000"; //fill(0)
 ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height); //background(0)
 ctx.globalCompositeOperation = 'lighter'; //blendMode(ADD)
-  
+
 for(var i =0; i< num; i++){
   x[i] = Math.random() * ctx.canvas.width;
   y[i] = Math.random() * ctx.canvas.height;
@@ -56,18 +56,18 @@ function draw() {
     var distance = Math.hypot(x[i] - mouseX, y[i] - mouseY); //dist(mouseX, mouseY, x[i], y[i]);
     //Acceleration is inversely proportional to the square of the distance from the center of attraction.
     if(distance > 3){ //Does not update the acceleration if it is too close to the mouse
-      ax[i] = magnetism * (mouseX - x[i]) / (distance * distance); 
+      ax[i] = magnetism * (mouseX - x[i]) / (distance * distance);
       ay[i] = magnetism * (mouseY - y[i]) / (distance * distance);
     }
     vx[i] += ax[i]; // Increase the speed vx by ax per frame.
     vy[i] += ay[i]; // Increase speed vy by ay per frame.
-  
+
     vx[i] = vx[i]*gensoku;
     vy[i] = vy[i]*gensoku;
-  
+
     x[i] += vx[i];  // Advance vx pixels per frame.
     y[i] += vy[i];  // Advance vy pixels per frame.
-    
+
     var sokudo = Math.hypot(vx[i],vy[i]); // dist(0,0,vx[i],vy[i]); Find velocity from X and Y components of velocity
     var r = map(sokudo, 0, 5, 0, 255); //Calculate color according to speed
     var g = map(sokudo, 0,5, 64, 255);
@@ -77,7 +77,7 @@ function draw() {
 
     //Equivalent to ellipse(x[i],y[i],radius,radius)
     ctx.beginPath();
-    ctx.ellipse(x[i], y[i], radius, radius, 0, 0, 2 * Math.PI); 
+    ctx.ellipse(x[i], y[i], radius, radius, 0, 0, 2 * Math.PI);
     ctx.fill();
   }
   window.requestAnimationFrame(draw);
