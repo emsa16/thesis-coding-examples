@@ -108,18 +108,4 @@ function draw() {
   }
 
   phi += delta; //Replaces injecting phi + delta into the ani() function
-
-  // TEMP funderar på this
-  // requestAnimationFrame(ani.bind(this, φ + δ))
 };
-
-
-
-//TEMPGREJER
-// function mousePressed() {
-//   noLoop();
-// }
-
-// function mouseReleased() {
-//   loop();
-// }
