@@ -39,10 +39,6 @@ class Vector {
         }
     }
     draw() {
-        if (!(this.x == 3 && (this.y == 3 || this.y == 4000))) {
-            // return;
-        }
-
         //Shadow
         stroke("rgba(0, 0, 0, 0.3)");
         line(this.x1 + strokeWidth * 0.35, this.y1, this.x2 + strokeWidth * 0.35, this.y2) //Replaces all path commands, shadow is offset by 0.35 times the stroke width
