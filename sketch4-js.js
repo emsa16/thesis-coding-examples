@@ -1,61 +1,101 @@
-let mapImage, locationData, nameData, dataData, font, locationTable, nameTable, rowCount, dataTable, interpolators, closestDist, closestText, closestTextX, closestTextY,
-    dataMin = -10,
-    dataMax = 10;
+let rowCount, interpolators, closestDist, closestText, closestTextX, closestTextY, now, delta;
+const dataMin = -10;
+const dataMax = 10;
+
+//instead of frameRate(30), frame durations are calculated and FPS controlled in draw()
+const fps = 30;
+const interval = 1000/fps;
+let then = Date.now();
+
+// No setup() necessary
+// equivalent to createCanvas(640, 400)
+const c = document.createElement("canvas");
+document.body.appendChild(c);
+const ctx = c.getContext("2d");
+const width = ctx.canvas.width  = 640;
+const height = ctx.canvas.height = 400;
+
+const mapImage = new Image();
+mapImage.src = 'sketch4-data/map.png'; //loadImage("sketch4-data/map.png")
+
+let locationTable = new Table();
+let nameTable = new Table();
+let dataTable = new Table();
+
+ctx.font = '12px Univers'; // textFont(font), loadFont() is replaced by loading font through CSS
+
+ctx.imageSmoothingEnabled = true; // smooth()
+ctx.strokeStyle = "rgba(1, 1, 1, 0)"; // NoStroke()
 
 
-function preload() {
-    mapImage = loadImage("sketch4-data/map.png");
-    locationData = loadStrings("sketch4-data/locations.tsv");
-    nameData = loadStrings("sketch4-data/names.tsv");
-    dataData = loadStrings("sketch4-data/random.tsv");
-    font = loadFont("sketch4-data/UNVR65W.TTF");
+//Additional setup for mouse events
+let mouseX = 0;
+let mouseY = 0;
+c.onmousemove = (e) => {
+  //Point coordinates counted inside element
+  mouseX = e.offsetX;
+  mouseY = e.offsetY;
 }
 
 
-function setup() {
-  createCanvas(640, 400);
-  locationTable = new Table(locationData);
-  nameTable = new Table(nameData);
-  rowCount = locationTable.getRowCount();
+//extra function needed
+function map (num, in_min, in_max, out_min, out_max) {
+  return (num - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
+}
 
-  dataTable = new Table(dataData);
+
+//Instead of preload(), asynchronously load file contents for the tables
+async function load() {
+  // Instead of loadStrings() in preload()
+  await locationTable.init("sketch4-data/locations.tsv");
+  await nameTable.init("sketch4-data/names.tsv");
+  await dataTable.init("sketch4-data/random.tsv");
+
+  rowCount = locationTable.getRowCount();
   interpolators = new Array(rowCount);
   for (let row = 0; row < rowCount; row++) {
     const initialValue = dataTable.getFloat(row, 1);
     interpolators[row] = new Integrator(initialValue);
   }
-
-  textFont(font);
-
-  smooth();
-  noStroke();
-  frameRate(30); //To make state transition animation slower and more visible
 }
+load();
 
 
 function draw() {
-  background(255);
-  image(mapImage, 0, 0);
+  window.requestAnimationFrame(draw);
 
-  for (let row = 0; row < rowCount; row++) {
-    interpolators[row].update();
-  }
+  now = Date.now();
+  delta = now - then;
+  if (delta > interval) {
+    then = now - (delta % interval);
 
-  closestDist = width*height;  // abritrarily high
+    // Equal to background(255)
+    ctx.fillStyle = "#FFFFFF";
+    ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
 
-  for (let row = 0; row < rowCount; row++) {
-    const abbrev = dataTable.getRowName(row);
-    const x = locationTable.getFloat(abbrev, 1);
-    const y = locationTable.getFloat(abbrev, 2);
-    drawData(x, y, abbrev);
-  }
+    ctx.drawImage(mapImage, 0, 0); // image(mapImage, 0, 0);
 
-  if (closestDist != width*height) {
-    fill(0);
-    textAlign(CENTER);
-    text(closestText, closestTextX, closestTextY);
+    for (let row = 0; row < rowCount; row++) {
+      interpolators[row].update();
+    }
+
+    closestDist = width*height;  // abritrarily high
+
+    for (let row = 0; row < rowCount; row++) {
+      const abbrev = dataTable.getRowName(row);
+      const x = locationTable.getFloat(abbrev, 1);
+      const y = locationTable.getFloat(abbrev, 2);
+      drawData(x, y, abbrev);
+    }
+
+    if (closestDist != width*height) {
+      ctx.fillStyle = "#000000"; // fill(0);
+      ctx.textAlign = 'center'; // textAlign(CENTER);
+      ctx.fillText(closestText, closestTextX, closestTextY); //text(closestText, closestTextX, closestTextY);
+    }
   }
 }
+window.requestAnimationFrame(draw);
 
 
 function drawData(x, y, abbrev) {
@@ -64,22 +104,27 @@ function drawData(x, y, abbrev) {
   // Get the current value
   const value = interpolators[row].value;
 
-  let radius = 0;
+  let radius;
   if (value >= 0) {
     radius = map(value, 0, dataMax, 1.5, 15);
-    fill('#333366');  // blue
+    ctx.fillStyle = '#333366'; // fill('#333366');  // blue
   } else {
     radius = map(value, 0, dataMin, 1.5, 15);
-    fill('#ec5166');  // red
+    ctx.fillStyle = '#ec5166'; // fill('#ec5166');  // red
   }
-  ellipseMode(RADIUS);
-  ellipse(x, y, radius, radius);
 
-  const d = dist(x, y, mouseX, mouseY);
+  //Equivalent to ellipse(x, y, radius, radius), ellipseMode() not needed
+  ctx.beginPath();
+  ctx.ellipse(x, y, radius, radius, 0, 0, 2 * Math.PI);
+  ctx.fill();
+
+  const d = Math.hypot(x - mouseX, y - mouseY) // d = dist(x, y, mouseX, mouseY);
   if ((d < radius + 2) && (d < closestDist)) {
     closestDist = d;
     const name = nameTable.getString(abbrev, 1);
-    const val = nfp(interpolators[row].targetProp, 0, 2);
+    //Equal to nfp(interpolators[row].targetProp, 0, 2);
+    let val = interpolators[row].targetProp.toFixed(2);
+    val = (val <= 0 ? "": "+") + val;
     closestText = name + " " + val;
     closestTextX = x;
     closestTextY = y-radius-4;
@@ -87,16 +132,17 @@ function drawData(x, y, abbrev) {
 }
 
 
-function keyPressed() {
-  if (keyCode === 32) { //Space character
+function keyPressed(e) {
+  if (e.keyCode === 32) { //Space character
     updateTable();
   }
 }
+window.addEventListener('keydown', keyPressed);
 
 
 function updateTable() {
   for (let row = 0; row < rowCount; row++) {
-    const newValue = random(dataMin, dataMax);
+    const newValue = Math.random() * (dataMax - dataMin) + dataMin; //random(dataMin, dataMax);
     interpolators[row].target(newValue);
   }
 }

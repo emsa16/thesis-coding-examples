@@ -1,11 +1,19 @@
 class Table {
-    constructor(rows) {
+    constructor() {
       this.rowCount = 0;
-      // const rows = loadStrings(filename);
+      this.data;
+    }
+
+    async init(filename) {
+      //Equal to loadStrings(filename)
+      const response = await fetch(filename);
+      const text = await response.text();
+      const rows = text.split('\n');
+
       this.data = new Array(rows.length);
 
       for (let i = 0; i < rows.length; i++) {
-        if (trim(rows[i]).length == 0) {
+        if (rows[i].trim().length == 0) {
           continue; // skip empty rows
         }
         if (rows[i].startsWith("#")) {
@@ -13,13 +21,13 @@ class Table {
         }
 
         // split the row on the tabs
-        const pieces = split(rows[i], '\t');
+        const pieces = rows[i].split('\t');
         // copy to the table array
         this.data[this.rowCount] = pieces;
         this.rowCount++;
       }
       // resize the 'data' array as necessary
-      this.data = this.data.slice(0, rowCount);
+      this.data = this.data.slice(0, this.rowCount);
     }
 
 

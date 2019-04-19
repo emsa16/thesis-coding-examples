@@ -19,7 +19,7 @@ class Table {
         this.rowCount++;
       }
       // resize the 'data' array as necessary
-      this.data = this.data.slice(0, rowCount);
+      this.data = this.data.slice(0, this.rowCount);
     }
 
 
