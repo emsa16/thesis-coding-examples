@@ -1,16 +1,14 @@
 class Table {
     constructor() {
       this.rowCount = 0;
-      this.data;
+      this.data = [];
     }
 
     async init(filename) {
-      //Equal to loadStrings(filename)
+      // Equal to rows = loadStrings(filename)
       const response = await fetch(filename);
       const text = await response.text();
       const rows = text.split('\n');
-
-      this.data = new Array(rows.length);
 
       for (let i = 0; i < rows.length; i++) {
         if (rows[i].trim().length == 0) {
@@ -26,8 +24,6 @@ class Table {
         this.data[this.rowCount] = pieces;
         this.rowCount++;
       }
-      // resize the 'data' array as necessary
-      this.data = this.data.slice(0, this.rowCount);
     }
 
 
@@ -77,7 +73,7 @@ class Table {
 
 
     setString(row, column, what) {
-      if (NaN(row)) {
+      if (NaN(row)) { //It contains the row name instead of the row index
           row = this.getRowIndex(row);
       }
       this.data[row][column] = str(what);

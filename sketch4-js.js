@@ -1,38 +1,42 @@
-let rowCount, interpolators, closestDist, closestText, closestTextX, closestTextY, now, delta;
+let rowCount, interpolators,
+    closestDist, closestText, closestTextX, closestTextY,
+    now, delta;
 const dataMin = -10;
 const dataMax = 10;
 
-//instead of frameRate(30), frame durations are calculated and FPS controlled in draw()
-const fps = 30;
-const interval = 1000/fps;
-let then = Date.now();
 
 // No setup() necessary
 // equivalent to createCanvas(640, 400)
 const c = document.createElement("canvas");
 document.body.appendChild(c);
 const ctx = c.getContext("2d");
-const width = ctx.canvas.width  = 640;
+const width = ctx.canvas.width = 640;
 const height = ctx.canvas.height = 400;
 
 const mapImage = new Image();
 mapImage.src = 'sketch4-data/map.png'; //loadImage("sketch4-data/map.png")
 
+//File contents are loaded later in load()
 let locationTable = new Table();
 let nameTable = new Table();
 let dataTable = new Table();
 
-ctx.font = '12px Univers'; // textFont(font), loadFont() is replaced by loading font through CSS
+ctx.font = '12px Univers'; // textFont(font); loadFont() is also replaced by loading font through CSS
 
 ctx.imageSmoothingEnabled = true; // smooth()
 ctx.strokeStyle = "rgba(1, 1, 1, 0)"; // NoStroke()
+
+//instead of frameRate(30), frame durations are calculated and FPS controlled in draw()
+const fps = 30;
+const interval = 1000/fps;
+let then = Date.now();
 
 
 //Additional setup for mouse events
 let mouseX = 0;
 let mouseY = 0;
 c.onmousemove = (e) => {
-  //Point coordinates counted inside element
+  //Coordinates are counted inside target element
   mouseX = e.offsetX;
   mouseY = e.offsetY;
 }
@@ -52,7 +56,7 @@ async function load() {
   await dataTable.init("sketch4-data/random.tsv");
 
   rowCount = locationTable.getRowCount();
-  interpolators = new Array(rowCount);
+  interpolators = [];
   for (let row = 0; row < rowCount; row++) {
     const initialValue = dataTable.getFloat(row, 1);
     interpolators[row] = new Integrator(initialValue);
@@ -64,6 +68,7 @@ load();
 function draw() {
   window.requestAnimationFrame(draw);
 
+  //Controlling FPS
   now = Date.now();
   delta = now - then;
   if (delta > interval) {
@@ -71,7 +76,7 @@ function draw() {
 
     // Equal to background(255)
     ctx.fillStyle = "#FFFFFF";
-    ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+    ctx.fillRect(0, 0, width, height);
 
     ctx.drawImage(mapImage, 0, 0); // image(mapImage, 0, 0);
 
@@ -122,9 +127,11 @@ function drawData(x, y, abbrev) {
   if ((d < radius + 2) && (d < closestDist)) {
     closestDist = d;
     const name = nameTable.getString(abbrev, 1);
-    //Equal to nfp(interpolators[row].targetProp, 0, 2);
-    let val = interpolators[row].targetProp.toFixed(2);
+
+    //Equal to nfp(interpolators[row].value, 0, 2);
+    let val = interpolators[row].value.toFixed(2);
     val = (val <= 0 ? "": "+") + val;
+
     closestText = name + " " + val;
     closestTextX = x;
     closestTextY = y-radius-4;

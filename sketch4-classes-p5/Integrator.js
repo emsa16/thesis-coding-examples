@@ -11,7 +11,7 @@ class Integrator {
         this.force = 0;
         this.mass = 1;
         this.targeting = false;
-        this.targetProp = 0;
+        this.targetValue = 0;
     }
 
 
@@ -22,7 +22,7 @@ class Integrator {
 
     update() {
       if (this.targeting) {
-        this.force += this.attraction * (this.targetProp - this.value);
+        this.force += this.attraction * (this.targetValue - this.value);
       }
 
       this.accel = this.force / this.mass;
@@ -35,7 +35,7 @@ class Integrator {
 
     target(t) {
       this.targeting = true;
-      this.targetProp = t;
+      this.targetValue = t;
     }
 
 

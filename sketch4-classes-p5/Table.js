@@ -1,8 +1,7 @@
 class Table {
     constructor(rows) {
       this.rowCount = 0;
-      // const rows = loadStrings(filename);
-      this.data = new Array(rows.length);
+      this.data = [];
 
       for (let i = 0; i < rows.length; i++) {
         if (trim(rows[i]).length == 0) {
@@ -18,8 +17,6 @@ class Table {
         this.data[this.rowCount] = pieces;
         this.rowCount++;
       }
-      // resize the 'data' array as necessary
-      this.data = this.data.slice(0, this.rowCount);
     }
 
 
@@ -69,7 +66,7 @@ class Table {
 
 
     setString(row, column, what) {
-      if (NaN(row)) {
+      if (NaN(row)) { //It contains the row name instead of the row index
           row = this.getRowIndex(row);
       }
       this.data[row][column] = str(what);

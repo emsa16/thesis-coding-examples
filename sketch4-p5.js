@@ -1,8 +1,11 @@
-let mapImage, locationData, nameData, dataData, font, locationTable, nameTable, rowCount, dataTable, interpolators, closestDist, closestText, closestTextX, closestTextY,
-    dataMin = -10,
-    dataMax = 10;
+let mapImage, locationData, nameData, dataData, font,
+    locationTable, nameTable, dataTable, rowCount, interpolators,
+    closestDist, closestText, closestTextX, closestTextY;
+const dataMin = -10;
+const dataMax = 10;
 
 
+//Need to load file contents here as loadStrings() and similar are asynchronous in Javascript as opposed to Java
 function preload() {
     mapImage = loadImage("sketch4-data/map.png");
     locationData = loadStrings("sketch4-data/locations.tsv");
@@ -16,10 +19,10 @@ function setup() {
   createCanvas(640, 400);
   locationTable = new Table(locationData);
   nameTable = new Table(nameData);
-  rowCount = locationTable.getRowCount();
-
   dataTable = new Table(dataData);
-  interpolators = new Array(rowCount);
+
+  rowCount = locationTable.getRowCount();
+  interpolators = [];
   for (let row = 0; row < rowCount; row++) {
     const initialValue = dataTable.getFloat(row, 1);
     interpolators[row] = new Integrator(initialValue);
@@ -79,7 +82,7 @@ function drawData(x, y, abbrev) {
   if ((d < radius + 2) && (d < closestDist)) {
     closestDist = d;
     const name = nameTable.getString(abbrev, 1);
-    const val = nfp(interpolators[row].targetProp, 0, 2);
+    const val = nfp(interpolators[row].value, 0, 2);
     closestText = name + " " + val;
     closestTextX = x;
     closestTextY = y-radius-4;
