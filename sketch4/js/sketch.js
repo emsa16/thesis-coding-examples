@@ -14,7 +14,7 @@ const width = ctx.canvas.width = 640;
 const height = ctx.canvas.height = 400;
 
 const mapImage = new Image();
-mapImage.src = 'sketch4-data/map.png'; //loadImage("sketch4-data/map.png")
+mapImage.src = '../data/map.png'; //loadImage("../data/map.png")
 
 //File contents are loaded later in load()
 let locationTable = new Table();
@@ -51,9 +51,9 @@ function map (num, in_min, in_max, out_min, out_max) {
 //Instead of preload(), asynchronously load file contents for the tables
 async function load() {
   // Instead of loadStrings() in preload()
-  await locationTable.init("sketch4-data/locations.tsv");
-  await nameTable.init("sketch4-data/names.tsv");
-  await dataTable.init("sketch4-data/random.tsv");
+  await locationTable.init("../data/locations.tsv");
+  await nameTable.init("../data/names.tsv");
+  await dataTable.init("../data/random.tsv");
 
   rowCount = locationTable.getRowCount();
   interpolators = [];

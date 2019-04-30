@@ -7,11 +7,11 @@ const dataMax = 10;
 
 //Need to load file contents here as loadStrings() and similar are asynchronous in Javascript as opposed to Java
 function preload() {
-    mapImage = loadImage("sketch4-data/map.png");
-    locationData = loadStrings("sketch4-data/locations.tsv");
-    nameData = loadStrings("sketch4-data/names.tsv");
-    dataData = loadStrings("sketch4-data/random.tsv");
-    font = loadFont("sketch4-data/UNVR65W.TTF");
+    mapImage = loadImage("../data/map.png");
+    locationData = loadStrings("../data/locations.tsv");
+    nameData = loadStrings("../data/names.tsv");
+    dataData = loadStrings("../data/random.tsv");
+    font = loadFont("../data/UNVR65W.TTF");
 }
 
 
