@@ -1,4 +1,4 @@
-# Coding experiments for [THESIS NAME]
+# Coding experiments for [THESIS NAME] (Appendix C)
 
 ## Licences
 
