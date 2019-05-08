@@ -1,5 +1,12 @@
 # Coding experiments for [THESIS NAME] (Appendix C)
 
+## Analysis
+
+The `analysis` directory contains result files for the performance analysis of all the sketches.
+- `analysis/network` contains screenshots from the Firefox Network Monitor tool
+- `analysis/performance` contains json files that are exported results from the Performance tools in both Chrome and Firefox. To view these files they can be loaded in each browser's Performance panel section.
+
+
 ## Licences
 
 The general license for this repo is MIT and details can be found in the `LICENSE` file. However, this repo consists of several code sketches with different authors. The corresponding license for the original version for each sketch is included in their directory. For convenience, here is a summary of all licenses used:
