@@ -1,4 +1,6 @@
-# Coding experiments for [THESIS NAME] (Appendix C)
+# Coding experiments for "Creative Coding on the Web in p5.js" thesis by Emil Sandberg (Appendix C)
+
+For quick access, the file index.html in the base directory contains links to all sketches in both versions.
 
 ## Analysis
 
