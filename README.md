@@ -1,5 +1,7 @@
 # Coding experiments for "Creative Coding on the Web in p5.js" thesis by Emil Sandberg (Appendix C)
 
+[LINK TO THESIS](http://urn.kb.se/resolve?urn=urn:nbn:se:bth-17941)
+
 For quick access, the file index.html in the base directory contains links to all sketches in both versions.
 
 ## Analysis
